@@ -1,0 +1,303 @@
+/* style_index.css 統括本部用CSS */
+
+/*============
+全体の設定
+=============*/
+html,body,h1,h2,h3{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	text-align: center;
+}
+html { font-size: 62.5%; }  /* font-sizeは16pxの62.5%の10px */
+body { font-size: 1.6rem; } /*font-size : 16px と同等*/
+h1 { font-size: 3.2rem; }   /* font-size: 32px と同等 */
+h2 {
+  font-size: 2.4rem;        /* font-size: 24px と同等 */
+  position: relative;
+  padding: 0.2rem 1rem 1.5rem;
+}
+h2:after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  content: '';
+  background-image: -webkit-repeating-linear-gradient(135deg, #000, #000 1px, transparent 2px, transparent 5px);
+  background-image: repeating-linear-gradient(-45deg, #000, #000 1px, transparent 2px, transparent 5px);
+  background-size: 7px 7px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+li{
+	list-style: none;
+}
+a,
+a:visited,
+a:hover,
+a:active {
+  color: #3300cc;
+  text-decoration: none;
+}
+textarea{
+  min-height: 3.2rem;
+  max-height: 16rem;
+  resize: vertical;
+}
+p{
+  line-height: 120%;
+}
+
+/*============
+body
+=============*/
+
+/*画面4分割 */
+.outerframe{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.uppercolumn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lowercolumn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upperleft{
+  width: 800px;
+  height: 380px;
+  background-color: rgba(216,112,147,0.8);
+  border-radius: 20px;
+}
+.upperright{
+  width: 400px;
+  height: 380px;
+  background-color: rgba(176,224,230,1); /* rgba(255,239,213,1) */
+}
+.lowerleft{
+  width: 600px;
+  height: 300px;
+  background-color: rgba(176,224,230,1);
+}
+.lowerright{
+  width: 600px;
+  height: 300px;
+  background-color: rgba(0,128,128,0.8);
+  border-radius: 20px;
+}
+
+/* 避難状況の表 */
+#hinansha{
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;  /* セルの線を重ねる */
+}
+th,td {
+  font-weight: normal;
+  border: solid 2px;          /* 枠線指定 */
+  border-color: rgba(176,224,230,1);
+  background-color: #ffffff;
+  width:  90px;              /* 幅指定 */
+  height: 38px;               /* 高さ指定 */
+}
+th{
+  height: 52px;               /* 高さ指定 */
+}
+span{
+  font-size: smaller;
+  color: rgba(176,224,230,1);
+}
+
+
+/* ニュースティッカー */
+#ul_news {
+    display: none;
+}
+div.tick {
+  margin-right:auto;
+  margin-left: auto;
+    width: 500px;
+    height:220px;
+    line-height: 30px;
+    text-align: left;
+    border: solid 1px silver;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+div.tick a {
+    position: absolute;
+    margin-left: 10px;
+    font-size: 1.0em;
+    color: gray;
+}
+
+
+/* type="number"のinput欄の幅 */
+input[type="number"] {
+  width: 10rem;
+}
+.div-wrap{
+	margin: auto;
+	width: 28rem;
+	text-align: left;
+}
+/* 送信ボタンの設定 */
+.send-btn{
+  margin-bottom: 3.2rem;
+  width: 14rem;
+  background-color: white;
+  border-radius: 0.5rem;
+}
+.send-btn:hover {
+  background-color: yellow;
+}
+.send-btn[disabled] {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+/* 吹き出しの設定 */
+/* 参考 https://125naroom.com/web/3034 */
+.oneArea {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  max-width: 1024px;
+  margin: 50px auto;
+  padding: 0 10px;
+}
+.oneArea .onebox {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.oneArea .onebox:nth-child(even) {
+  flex-direction: row-reverse;
+  margin-top: 20px;
+}
+.oneArea .onebox .imgArea {
+  width: 16%;
+  position: relative;
+}
+.oneArea .onebox:nth-child(odd) .imgArea img {
+  width: 100%;
+  max-width: 130px;
+  position: absolute;
+  top: -20px;
+  left: 0;
+  padding-right: 30px;
+}
+.oneArea .onebox:nth-child(even) .imgArea img {
+  width: 100%;
+  max-width: 130px;
+  position: absolute;
+  top: -20px;
+  left: auto;
+  right: 0;
+  padding-left: 30px;
+}
+.oneArea .onebox .fukiArea {
+  width: 63%;
+}
+.oneArea .onebox .fukidasi {
+  width: 100%;
+  position: relative;
+  padding: 25px;
+  background-color: #f2f3f7;
+  font-size: 18px;
+  color: #231815;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.oneArea .onebox .fukidasi::before {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  top: 22px;
+  border-right: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+}
+.oneArea .onebox .fukidasi::after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  top: 40px;
+  border-right: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+}
+.oneArea .onebox:nth-child(odd) .fukidasi::before {
+  left: -15px;
+  border-left: 25px solid #f2f3f7;
+  border-top: 25px solid transparent;
+}
+.oneArea .onebox:nth-child(odd) .fukidasi::after {
+  left: -25px;
+  border-left: 25px solid #ffffff;
+  border-top: 25px solid transparent;
+}
+.oneArea .onebox:nth-child(even) .fukidasi {
+  background-color: #fde5e5;
+}
+.oneArea .onebox:nth-child(even) .fukidasi::before {
+  left: auto;
+  right: -15px;
+  border-left: 25px solid transparent;
+  border-top: 25px solid #fde5e5;
+}
+.oneArea .onebox:nth-child(even) .fukidasi::after {
+  left: auto;
+  right: -25px;
+  border-left: 25px solid transparent;
+  border-top: 25px solid #ffffff;
+}
+@media screen and (max-width: 1024px) {
+  .oneArea .onebox:nth-child(odd) .imgArea img {
+    max-width: 70%;
+    top: 0;
+  }
+  .oneArea .onebox:nth-child(even) .imgArea img {
+    max-width: 70%;
+    top: 0;
+  }
+  .oneArea .onebox .fukidasi {
+    padding: 15px;
+    font-size: 14px;
+  }
+  .oneArea .onebox .fukidasi::before {
+    top: 8px;
+  }
+  .oneArea .onebox .fukidasi::after {
+    top: 20px;
+  }
+}
+@media screen and (max-width: 420px) {
+  .oneArea {
+    margin: 30px auto;
+  }
+  .oneArea .onebox:nth-child(even) {
+    margin-top: 15px;
+  }
+  .oneArea .onebox .imgArea {
+    width: 20%;
+  }
+  .oneArea .onebox .fukidasi {
+    padding: 10px 15px;
+    font-size: 12px;
+  }
+}

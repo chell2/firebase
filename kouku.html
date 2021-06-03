@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>校区避難所</title>
+	<link rel="stylesheet" href="CSS/style_kouku.css">
+</head>
+
+<body>
+
+	<div id="navArea">
+		<nav>
+			<div class="inner">
+				<ul>
+					<li class="menu active"><a href="#">避難状況の報告</a></li>
+					<li class="menu"><a href="#">物資の使用記録</a></li>
+					<li class="menu"><a href="#">連絡・問い合わせ</a></li>
+					<li class="menu"><a href="#">過去の報告・記録</a></li>
+				</ul>
+			</div>
+			<div>
+				<select name="koukuSet" id="koukuSet">
+					<option hidden>-- 校区を選択 --</option>
+					<option value="中央">中央</option>
+					<option value="南">南</option>
+					<option value="北">北</option>
+				</select>
+			</div>
+		</nav>
+		<div class="toggle_btn">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+		<div id="mask"></div>
+	</div>
+
+	<main>
+		<h2><span id="koukuName"></span>校区避難所</h2>
+		<div class="content-area">
+			<div class="content show">
+				<h1>避難状況の報告</h1>
+				<form id="formHinan">
+					<div class="div-wrap">
+						<table>
+							<tr>
+								<td><input type="text" id="koukuHinan" size="10" required> 校区 / </td>
+								<td><label for="staffHinan">担当: <input type="text" id="staffHinan" size="10"
+											placeholder="例）田中" required></td>
+							</tr>
+							<tr>
+								<td><label for="setai">避難世帯数・・</label></td>
+								<td><input type="number" id="setai" min="0" step="1" required> </td>
+							</tr>
+							<tr>
+								<td><label for="evacuees">避難者数・・・</label></td>
+								<td><input type="number" id="evacuees" min="0" step="1" required> 人</td>
+							</tr>
+							<tr>
+								<td><label for="welfare">(配慮が必要な方 </label></td>
+								<td><input type="number" id="welfare" min="0" step="1" required> 人)</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<textarea name="" id="memo" cols="35" rows="3" placeholder="備考欄"></textarea>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<button type="submit" class="send-btn" id="sendHinan">送信</button>
+				</form>
+			</div>
+			<div class="content">
+				<h1>物資の使用記録</h1>
+				<form id="formBusshi">
+					<div class="div-wrap">
+						<table>
+							<tr>
+								<td><input type="text" id="koukuBusshi" size="10" required> 校区 /
+								</td>
+								<td><label for="staffBusshi">担当: <input type="text" id="staffBusshi" size="10"
+											placeholder="例）田中" required></td>
+							</tr>
+							<tr>
+								<td colspan="2">■ 食糧</td>
+							</tr>
+							<tr>
+								<td><label for="kome">アルファ米・・</label></td>
+								<td><input type="number" id="kome" min="0" step="1"> 袋</td>
+							</tr>
+							<tr>
+								<td><label for="can">缶詰・・・・・
+									</label></td>
+								<td><input type="number" id="can" min="0" step="1"> 個</td>
+							</tr>
+							<tr>
+								<td colspan="2">■ 飲料</td>
+							</tr>
+							<tr>
+								<td><label for="water">水・・・・・・</label></td>
+								<td><input type="number" id="water" min="0" step="1"> 本</td>
+							</tr>
+							<tr>
+								<td><label for="beer">ビア・・・・・</label></td>
+								<td><input type="number" id="beer" min="0" step="1"> 本</td>
+							</tr>
+							<tr>
+								<td colspan="2">■ 乳幼児用</td>
+							</tr>
+							<tr>
+								<td><label for="milk">粉ミルク・・・</label></td>
+								<td><input type="number" id="milk" min="0" step="1"> 缶</td>
+							</tr>
+							<tr>
+								<td><label for="omutsu">紙おむつ・・・</label></td>
+								<td><input type="number" id="omutsu" min="0" step="1"> 枚</td>
+							</tr>
+							<tr>
+								<td colspan="2">■ 備品</td>
+							</tr>
+							<tr>
+								<td><label for="blanket">毛布・・・・・</label></td>
+								<td><input type="number" id="blanket" min="0" step="1"> 枚</td>
+							</tr>
+							<tr>
+								<td><label for="mat">マット・・・・</label></td>
+								<td><input type="number" id="mat" min="0" step="1"> 枚</td>
+							</tr>
+							<tr>
+								<td><label for="battery">乾電池・・・・</label></td>
+								<td><input type="number" id="battery" min="0" step="1"> 個</td>
+							</tr>
+							<tr>
+								<td colspan="2">■ その他使用物資</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<textarea name="" id="text" cols="35" rows="4" placeholder="自由記入"></textarea>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<button type="submit" class="send-btn" id="sendBusshi">送信</button>
+				</form>
+			</div>
+			<div class="content">
+				<h1>連絡・問い合わせ</h1>
+				<form id="formChat">
+					<div class="div-wrap">
+						<table>
+							<tr>
+								<td><input type="text" id="koukuChat" size="10" required> 校区 / </td>
+								<td><label for="staffChat">担当: <input type="text" id="staffChat" size="10"
+											placeholder="例）田中" required></td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<textarea name="" id="chat" cols="35" rows="10" placeholder="例）すでに避難者あり、13時に開設します。"
+										required></textarea>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<button type="submit" class="send-btn" id="sendChat">送信</button>
+				</form>
+				<div class="div-wrap">
+					<!-- データ出力場所 -->
+					<ul id="outputChat"></ul>
+				</div>
+			</div>
+			<div class="content">
+				<h1>過去の報告・記録</h1>
+				<a href="#sent01">01</a>　　/　　<a href="#sent02">02</a>
+				<div class="div-wrap">
+					<!-- データ出力場所 -->
+					<h3 id="sent01"><span>01</span>避難状況の報告</h3>
+					<ul id="outputHinan"></ul>
+					<h3 id="sent02"><span>02</span>物資の使用記録</h3>
+					<ul id="outputBusshi"></ul>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="JS/kouku.js"></script>
+
+	<!-- firebaseのコード（1） -->
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/8.6.3/firebase.js"></script>
+
+	<!-- TODO: Add SDKs for Firebase products that you want to use
+		     https://firebase.google.com/docs/web/setup#available-libraries -->
+	<script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-analytics.js"></script>
+	<script>
+		// Your web app's Firebase configuration
+		// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+		var firebaseConfig = {
+			apiKey: "AIzaSyD64Pfvwwrz8uHGIEA5MQ5YythAxcWX-Ak",
+			authDomain: "busshikanri-app.firebaseapp.com",
+			projectId: "busshikanri-app",
+			storageBucket: "busshikanri-app.appspot.com",
+			messagingSenderId: "747011002435",
+			appId: "1:747011002435:web:905b69422d438e3edc84f6",
+			measurementId: "G-YQ7X825F8Q"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		firebase.analytics();
+		var dbR = firebase.firestore().collection('report');
+		var dbS = firebase.firestore().collection('supply');
+		var dbC = firebase.firestore().collection('chat');
+
+		// 日時の表示
+		function convertFromFirestoreTimestampToDatetime(timestamp) {
+			const _d = timestamp ? new Date(timestamp * 1000) : new Date();
+			const Y = _d.getFullYear();
+			const m = (_d.getMonth() + 1).toString().padStart(2, '0');
+			const d = _d.getDate().toString().padStart(2, '0');
+			const H = _d.getHours().toString().padStart(2, '0');
+			const i = _d.getMinutes().toString().padStart(2, '0');
+			const s = _d.getSeconds().toString().padStart(2, '0');
+			return `${Y}年${m}月${d}日 ${H}:${i}`;
+		}
+
+		// 避難状況の報告を送受信
+		$('#sendHinan').on('click', function () {
+			const dataHinan = {
+				kouku: $('#koukuHinan').val(),
+				staff: $('#staffHinan').val(),
+				setai: $('#setai').val(),
+				evacuees: $('#evacuees').val(),
+				welfare: $('#welfare').val(),
+				memo: $('#memo').val(),
+				time: firebase.firestore.FieldValue.serverTimestamp(),
+			};
+			// console.log(dataHinan);
+			dbR.add(dataHinan);
+			$('#setai').val('');
+			$('#evacuees').val('');
+			$('#welfare').val('');
+			$('#memo').val('');
+		});
+
+		dbR.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			// console.log(querySnapshot.docs);
+			const dataHinanArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataHinan = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataHinanArray.push(dataHinan);
+			});
+			// console.log(dataHinanArray);
+
+			const tagHinanArray = [];
+			dataHinanArray.forEach(function (data) {
+				const tagHinan = `
+				<li id="${data.id}">
+					<p>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</p>
+					<p>【${data.data.kouku}校区】${data.data.staff}</p>
+					<p>　避難世帯数：${data.data.setai}</p>
+					<p>　避難者数：${data.data.evacuees}</p>
+					<p>　要配慮者：${data.data.welfare}</p>
+					<p>　備考：${data.data.memo}</p>
+				</li>
+				`;
+				tagHinanArray.push(tagHinan);
+			})
+			$('#outputHinan').html(tagHinanArray);
+		});
+
+		// 物資の使用記録を送受信
+		$('#sendBusshi').on('click', function () {
+			const dataBusshi = {
+				kouku: $('#koukuBusshi').val(),
+				staff: $('#staffBusshi').val(),
+				kome: $('#kome').val(),
+				can: $('#can').val(),
+				water: $('#water').val(),
+				beer: $('#beer').val(),
+				milk: $('#milk').val(),
+				omutsu: $('#omutsu').val(),
+				blanket: $('#blanket').val(),
+				mat: $('#mat').val(),
+				battery: $('#battery').val(),
+				text: $('#text').val(),
+				time: firebase.firestore.FieldValue.serverTimestamp(),
+			};
+			// console.log(dataBusshi);
+			dbS.add(dataBusshi);
+			$('#kome').val('');
+			$('#can').val('');
+			$('#water').val('');
+			$('#beer').val('');
+			$('#milk').val('');
+			$('#omutsu').val('');
+			$('#blanket').val('');
+			$('#mat').val('');
+			$('#battery').val('');
+			$('#text').val('');
+		});
+
+		dbS.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			// console.log(querySnapshot.docs);
+			const dataBusshiArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataBusshi = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataBusshiArray.push(dataBusshi);
+			});
+			// console.log(dataBusshiArray);
+
+			const tagBusshiArray = [];
+			dataBusshiArray.forEach(function (data) {
+				const tagBusshi = `
+				<li id="${data.id}">
+					<p>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</p>
+					<p>【${data.data.kouku}校区】${data.data.staff}</p>
+					<p>　アルファ米：${data.data.kome}</p>
+					<p>　缶詰：${data.data.can}</p>
+					<p>　水：${data.data.water}</p>
+					<p>　ビア：${data.data.beer}</p>
+					<p>　粉ミルク：${data.data.milk}</p>
+					<p>　おむつ：${data.data.omutsu}</p>
+					<p>　毛布：${data.data.blanket}</p>
+					<p>　マット：${data.data.mat}</p>
+					<p>　乾電池：${data.data.battery}</p>
+					<p>　その他物資：${data.data.text}</p>
+				</li>
+				`;
+				tagBusshiArray.push(tagBusshi);
+			})
+			$('#outputBusshi').html(tagBusshiArray);
+		});
+
+		// チャットを送受信
+		$('#sendChat').on('click', function () {
+			const dataChat = {
+				kouku: $('#koukuChat').val(),
+				staff: $('#staffChat').val(),
+				chat: $('#chat').val(),
+				time: firebase.firestore.FieldValue.serverTimestamp(),
+			};
+			// console.log(dataChat);
+			dbC.add(dataChat);
+			$('#chat').val('');
+		});
+
+		dbC.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			// console.log(querySnapshot.docs);
+			const dataChatArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataChat = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataChatArray.push(dataChat);
+			});
+			// console.log(dataChatArray);
+
+			const tagChatArray = [];
+			dataChatArray.forEach(function (data) {
+				const tagChat = `
+				<div class="onebox">
+				<div class="fukiArea">
+				<div class="fukidasi">
+				<li id="${data.id}">
+					<p>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</p>
+					<p>【${data.data.kouku}】${data.data.staff}</p>
+					<p>　${data.data.chat}</p>
+				</li>
+				</div></div></div>
+				`;
+				tagChatArray.push(tagChat);
+			})
+			$('#outputChat').html(tagChatArray);
+		});
+
+	</script>
+</body>
+
+</html>
