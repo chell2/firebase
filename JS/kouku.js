@@ -32,16 +32,6 @@ $(function () {
 	})
 })
 
-// 校区名の設定
-$('#koukuSet').change(function () {
-	const koukumei = $('option:selected').val();
-	const elem = document.getElementById('koukuName');
-	elem.innerText = koukumei;
-	document.getElementById("koukuHinan").value = koukumei;
-	document.getElementById("koukuBusshi").value = koukumei;
-	document.getElementById("koukuChat").value = koukumei;
-})
-
 // 空送信できない仕組み
 // 参考 https://logic-a.com/2013/05/22/submit_false_on_textbox_text_none/
 // 1.避難報告
@@ -103,3 +93,4 @@ $(function () {
 		}
 	});
 });
+
