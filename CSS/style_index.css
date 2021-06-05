@@ -36,7 +36,7 @@ a,
 a:visited,
 a:hover,
 a:active {
-  color: #3300cc;
+  color: #333;
   text-decoration: none;
 }
 textarea{
@@ -78,7 +78,7 @@ body
 .upperright{
   width: 400px;
   height: 380px;
-  background-color: rgba(176,224,230,1); /* rgba(255,239,213,1) */
+  background-color: rgba(176,224,230,1); 
 }
 .lowerleft{
   width: 600px;
@@ -88,8 +88,9 @@ body
 .lowerright{
   width: 600px;
   height: 300px;
-  background-color: rgba(0,128,128,0.8);
+  background-color: rgba(0,128,128,1);
   border-radius: 20px;
+  color: #fff;
 }
 
 /* 避難状況の表 */
@@ -102,7 +103,7 @@ th,td {
   font-weight: normal;
   border: solid 2px;          /* 枠線指定 */
   border-color: rgba(176,224,230,1);
-  background-color: #ffffff;
+  background-color: #fff;
   width:  90px;              /* 幅指定 */
   height: 38px;               /* 高さ指定 */
 }
@@ -111,9 +112,11 @@ th{
 }
 span{
   font-size: smaller;
+}
+span.kara{
+  font-size: smaller;
   color: rgba(176,224,230,1);
 }
-
 
 /* ニュースティッカー */
 #ul_news {
@@ -156,148 +159,73 @@ input[type="number"] {
   border-radius: 0.5rem;
 }
 .send-btn:hover {
-  background-color: yellow;
+  background-color: rgba(0,128,128,1);
+  color: #fff;
 }
 .send-btn[disabled] {
   background-color: #666;
   cursor: not-allowed;
 }
 
-/* 吹き出しの設定 */
-/* 参考 https://125naroom.com/web/3034 */
-.oneArea {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  max-width: 1024px;
-  margin: 50px auto;
-  padding: 0 10px;
+/*============
+chat
+=============*/
+
+#chatHonbu{
+  background-color: rgba(176,224,230,1);
+  font-weight: normal;
+  border: solid 2px;          /* 枠線指定 */
+  border-color: rgba(176,224,230,1);
 }
-.oneArea .onebox {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+.chat-th,
+.chat-tr{
+  margin-top: 0;
+  padding: 0 auto;
+  background-color: rgba(176,224,230,1);
+  font-weight: normal;
+  border: solid 2px;          /* 枠線指定 */
+  border-color: rgba(176,224,230,1);
 }
-.oneArea .onebox:nth-child(even) {
-  flex-direction: row-reverse;
-  margin-top: 20px;
+
+
+/* 左からの吹き出し */
+.left_balloon {
+    background: #f1f0f0;
+    border: 0 solid #777;
+    margin: 0.5rem 1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1.5rem;
+    width: 22rem;
+    clear: both;
 }
-.oneArea .onebox .imgArea {
-  width: 16%;
-  position: relative;
+
+/* 右からの吹き出し */
+.right_balloon {
+    color: #fff;
+    background: rgba(0,128,128,0.6);
+    border: 0 solid #777;
+    margin: 0.5rem 0;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1.5rem;
+    width: 22rem;
+    clear: both;
+    float: right;
 }
-.oneArea .onebox:nth-child(odd) .imgArea img {
-  width: 100%;
-  max-width: 130px;
-  position: absolute;
-  top: -20px;
-  left: 0;
-  padding-right: 30px;
+
+/* 割り込みを解除 */
+.clear_balloon{
+  clear: both;
 }
-.oneArea .onebox:nth-child(even) .imgArea img {
-  width: 100%;
-  max-width: 130px;
-  position: absolute;
-  top: -20px;
-  left: auto;
-  right: 0;
-  padding-left: 30px;
+
+.sender_name{
+    margin-bottom: -0.2rem;
+    padding-left: 1rem;
+    color: rgba(0, 0, 0,0.4);
 }
-.oneArea .onebox .fukiArea {
-  width: 63%;
+.sender_name.me{
+    float: right;
+    padding: 0 2rem 0 0;
 }
-.oneArea .onebox .fukidasi {
-  width: 100%;
-  position: relative;
-  padding: 25px;
-  background-color: #f2f3f7;
-  font-size: 18px;
-  color: #231815;
-  border-radius: 12px;
-  box-sizing: border-box;
-}
-.oneArea .onebox .fukidasi::before {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  transform: rotate(45deg);
-  top: 22px;
-  border-right: 25px solid transparent;
-  border-bottom: 25px solid transparent;
-}
-.oneArea .onebox .fukidasi::after {
-  content: '';
-  position: absolute;
-  display: block;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  transform: rotate(45deg);
-  top: 40px;
-  border-right: 25px solid transparent;
-  border-bottom: 25px solid transparent;
-}
-.oneArea .onebox:nth-child(odd) .fukidasi::before {
-  left: -15px;
-  border-left: 25px solid #f2f3f7;
-  border-top: 25px solid transparent;
-}
-.oneArea .onebox:nth-child(odd) .fukidasi::after {
-  left: -25px;
-  border-left: 25px solid #ffffff;
-  border-top: 25px solid transparent;
-}
-.oneArea .onebox:nth-child(even) .fukidasi {
-  background-color: #fde5e5;
-}
-.oneArea .onebox:nth-child(even) .fukidasi::before {
-  left: auto;
-  right: -15px;
-  border-left: 25px solid transparent;
-  border-top: 25px solid #fde5e5;
-}
-.oneArea .onebox:nth-child(even) .fukidasi::after {
-  left: auto;
-  right: -25px;
-  border-left: 25px solid transparent;
-  border-top: 25px solid #ffffff;
-}
-@media screen and (max-width: 1024px) {
-  .oneArea .onebox:nth-child(odd) .imgArea img {
-    max-width: 70%;
-    top: 0;
-  }
-  .oneArea .onebox:nth-child(even) .imgArea img {
-    max-width: 70%;
-    top: 0;
-  }
-  .oneArea .onebox .fukidasi {
-    padding: 15px;
-    font-size: 14px;
-  }
-  .oneArea .onebox .fukidasi::before {
-    top: 8px;
-  }
-  .oneArea .onebox .fukidasi::after {
-    top: 20px;
-  }
-}
-@media screen and (max-width: 420px) {
-  .oneArea {
-    margin: 30px auto;
-  }
-  .oneArea .onebox:nth-child(even) {
-    margin-top: 15px;
-  }
-  .oneArea .onebox .imgArea {
-    width: 20%;
-  }
-  .oneArea .onebox .fukidasi {
-    padding: 10px 15px;
-    font-size: 12px;
-  }
+.sender_date{
+  font-size: smaller;
 }

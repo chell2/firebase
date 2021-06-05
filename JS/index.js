@@ -38,3 +38,22 @@ function showNews() {
 		$('#div_ticker4 a').css('top', ticker.height).animate({ top: '0' }, ticker.time, 'linear');
 	});
 }
+
+// 空送信できない仕組み
+// 3.チャット
+$(function () {
+	$('#sendChat').prop("disabled", true);
+	$('#formChat input:required').change(function () {
+		let flag = true;
+		$('#formChat input:required').each(function (e) {
+			if ($('#formChat input:required').eq(e).val() === "") {
+				flag = false;
+			}
+		});
+		if (flag) {
+			$('#sendChat').prop("disabled", false);
+		} else {
+			$('#sendChat').prop("disabled", true);
+		}
+	});
+});

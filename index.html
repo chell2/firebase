@@ -19,9 +19,34 @@
 				<div class="upperleft">
 					<p>/// ビデオ会議 ///</p>
 				</div> <!-- upperleft -->
+
 				<div class="upperright">
-					<p>/// 連絡・問い合わせ ///</p>
-					<ul id="outputChat"></ul>
+					<p>/// 全体への連絡 ///</p>
+					<form id="formChat">
+						<div class="div-wrap">
+							<table id="chathonbu">
+								<tr class="chat-tr">
+									<td class="chat-th"><input type="text" id="koukuChat" size="10" value="統括本部"> /
+									</td>
+									<td class="chat-th"><label for="staffChat">担当: <input type="text" id="staffChat"
+												size="10" placeholder="例）田中" required>
+									</td>
+								</tr>
+								<tr class="chat-tr">
+									<td colspan="2" class="chat-th">
+										<textarea name="" id="chat" cols="35" rows="2" placeholder="例）6/3 11時を目処に設置願います"
+											required></textarea>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<button type="submit" class="send-btn" id="sendChat">送信</button>
+					</form>
+					<div class="div-wrap">
+						<!-- データ出力場所 -->
+						<ul class="outputChat" id="outputChat"></ul>
+					</div>
+
 				</div> <!-- upperright -->
 
 			</div> <!-- /uppercolumn -->
@@ -39,48 +64,49 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr id="outputHinanCenter">
 								<td>中央</td>
-								<td id="setaiC"></td>
-								<td id="evacueesC"></td>
-								<td id="welfareC"></td>
-								<td id="timeC"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
-							<tr>
+							<tr id="outputHinanSouth">
 								<td>南</td>
-								<td id="setaiS"></td>
-								<td id="evacueesS"></td>
-								<td id="welfareS"></td>
-								<td id="timeS"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
-							<tr>
+							<tr id="outputHinanNorth">
 								<td>北</td>
-								<td id="setaiN"></td>
-								<td id="evacueesN"></td>
-								<td id="welfareN"></td>
-								<td id="timeN"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
 							</tr>
 							<tr>
 								<td>合計</td>
 								<td id="setaiSum"></td>
 								<td id="evacueesSum"></td>
 								<td id="welfareSum"></td>
-								<td><span>♣ ♣ ♣</span></td>
+								<td><span class="kara">♣ ♣ ♣</span></td>
 							</tr>
 						</tbody>
 					</table>
 				</div> <!-- lowerleft -->
+
 				<div class="lowerright">
 					<p>/// 物資の使用記録 ///</p>
-
-					<ul id="outputBusshi ul_news"></ul>
-
-					<div id="div_ticker4" class="tick"></div>
-
+					<ul id="#outputBusshiCenter"></ul>
+					<ul id="#outputBusshiSouth"></ul>
+					<ul id="#outputBusshiNorth"></ul>
 				</div> <!-- lowerright -->
 			</div> <!-- /lowercolumn -->
+
 		</div> <!-- /outerframe -->
 	</main>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="JS/index.js"></script>
 
@@ -106,11 +132,12 @@
 		// Initialize Firebase
 		firebase.initializeApp(firebaseConfig);
 		firebase.analytics();
-		var dbR = firebase.firestore().collection('report');
 		var dbRc = firebase.firestore().collection('reportCenter');
 		var dbRs = firebase.firestore().collection('reportSouth');
 		var dbRn = firebase.firestore().collection('reportNorth');
-		var dbS = firebase.firestore().collection('supply');
+		var dbSc = firebase.firestore().collection('supplyCenter');
+		var dbSs = firebase.firestore().collection('supplySouth');
+		var dbSn = firebase.firestore().collection('supplyNorth');
 		var dbC = firebase.firestore().collection('chat');
 
 		// 日時の表示
@@ -122,12 +149,24 @@
 			const H = _d.getHours().toString().padStart(2, '0');
 			const i = _d.getMinutes().toString().padStart(2, '0');
 			const s = _d.getSeconds().toString().padStart(2, '0');
-			return `${Y}年${m}月${d}日 ${H}:${i}`;
+			return `${Y}.${m}.${d} ${H}:${i}`;
 		}
 
-		// 避難状況の報告を受信
-		dbR.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
-			// console.log(querySnapshot.docs);
+		// 日時の表示（短め）
+		function convertFromFirestoreTimestampToDatetimeShort(timestamp) {
+			const _d = timestamp ? new Date(timestamp * 1000) : new Date();
+			const Y = _d.getFullYear();
+			const m = (_d.getMonth() + 1).toString().padStart(2, '0');
+			const d = _d.getDate().toString().padStart(2, '0');
+			const H = _d.getHours().toString().padStart(2, '0');
+			const i = _d.getMinutes().toString().padStart(2, '0');
+			const s = _d.getSeconds().toString().padStart(2, '0');
+			return `${m}/${d} ${H}:${i}`;
+		}
+
+		// 1.避難状況の報告を受信
+		//// 中央校区
+		dbRc.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
 			const dataHinanArray = [];
 			querySnapshot.docs.forEach(function (doc) {
 				const dataHinan = {
@@ -136,29 +175,81 @@
 				};
 				dataHinanArray.push(dataHinan);
 			});
-			// console.log(dataHinanArray);
-
 			const tagHinanArray = [];
 			dataHinanArray.forEach(function (data) {
-				const tagSetai = `
-					<li id="${data.id}">
-						<span>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span>
-						<p>【${data.data.kouku}校区】${data.data.staff}</p>
-						<p>　避難世帯数：${data.data.setai}</p>
-						<p>　避難者数：${data.data.evacuees}</p>
-						<p>　要配慮者：${data.data.welfare}</p>
-						<p>　備考：${data.data.memo}</p>
-					</li>
-					`;
+				// 	const tagHinan = `
+				// 				<li id="${data.id}">
+				// 				<p>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</p>
+				// 				<p>【${data.data.kouku}校区】${data.data.staff}</p>
+				// 				<p>　避難世帯数：${data.data.setai}</p>
+				// 				<p>　避難者数：${data.data.evacuees}</p>
+				// 				<p>　要配慮者：${data.data.welfare}</p>
+				// 				<p>　備考：${data.data.memo}</p>
+				// 				</li>
+				// 				`;
+				const tagHinan = `
+							<td id="${data.id}">中央</td>
+							<td class="setai">${data.data.setai}</td>
+							<td class="evacu">${data.data.evacuees}</td>
+							<td class="welfa">${data.data.welfare}</td>
+							<td><span>${convertFromFirestoreTimestampToDatetimeShort(data.data.time.seconds)}</span></td>
+							`;
 				tagHinanArray.push(tagHinan);
 			})
-
-			$('#outputHinan').html(tagHinanArray);
+			$('#outputHinanCenter').html(tagHinanArray[0]);
 		});
 
-		// 物資の使用記録を受信
-		dbS.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
-			console.log(querySnapshot.docs);
+		//// 南校区
+		dbRs.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			const dataHinanArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataHinan = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataHinanArray.push(dataHinan);
+			});
+			const tagHinanArray = [];
+			dataHinanArray.forEach(function (data) {
+				const tagHinan = `
+							<td id="${data.id}">南</td>
+							<td class="setai">${data.data.setai}</td>
+							<td class="evacu">${data.data.evacuees}</td>
+							<td class="welfa">${data.data.welfare}</td>
+							<td><span>${convertFromFirestoreTimestampToDatetimeShort(data.data.time.seconds)}</span></td>
+							`;
+				tagHinanArray.push(tagHinan);
+			})
+			$('#outputHinanSouth').html(tagHinanArray[0]);
+		});
+
+		//// 北校区
+		dbRn.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			const dataHinanArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataHinan = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataHinanArray.push(dataHinan);
+			});
+			const tagHinanArray = [];
+			dataHinanArray.forEach(function (data) {
+				const tagHinan = `
+							<td id="${data.id}">北</td>
+							<td class="setai">${data.data.setai}</td>
+							<td class="evacu">${data.data.evacuees}</td>
+							<td class="welfa">${data.data.welfare}</td>
+							<td><span>${convertFromFirestoreTimestampToDatetimeShort(data.data.time.seconds)}</span></td>
+							`;
+				tagHinanArray.push(tagHinan);
+			})
+			$('#outputHinanNorth').html(tagHinanArray[0]);
+		});
+
+		// 2.物資の使用記録を受信
+		//// 中央校区
+		dbSc.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
 			const dataBusshiArray = [];
 			querySnapshot.docs.forEach(function (doc) {
 				const dataBusshi = {
@@ -167,38 +258,88 @@
 				};
 				dataBusshiArray.push(dataBusshi);
 			});
-			console.log(dataBusshiArray);
 			const tagBusshiArray = [];
 			dataBusshiArray.forEach(function (data) {
 				const tagBusshi = `
-	<li id="${data.id}"><a href="#">
-		<p>【${data.data.kouku}】${data.data.staff}　
-			<span>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span><br>
-		　アルファ米：${data.data.kome} / 缶詰：${data.data.can} / 水：${data.data.water} / ビア：${data.data.beer} / 乾電池：${data.data.battery}<br>
-		　粉ミルク：${data.data.milk} / おむつ：${data.data.omutsu} / 毛布：${data.data.blanket} / マット：${data.data.mat}<br>
-		　その他：${data.data.text}</p>
-	</a></li>
-	`;
+					<li id="${data.id}">
+					<p>【${data.data.kouku}】${data.data.staff}　
+					<span>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span><br>
+					　アルファ米：${data.data.kome} / 缶詰：${data.data.can} / 水：${data.data.water} / ビア：${data.data.beer} / 乾電池：${data.data.battery}<br>
+					　粉ミルク：${data.data.milk} / おむつ：${data.data.omutsu} / 毛布：${data.data.blanket} / マット：${data.data.mat}<br>
+					　その他：${data.data.text}</p>
+					</li>
+					`;
 				tagBusshiArray.push(tagBusshi);
 			})
-			$('#outputBusshi').html(tagBusshiArray);
+			$('#outputBusshiCenter').html(tagBusshiArray[0]);
+			console.log(tagBusshiArray[0]);
 		});
 
-		// チャットを送受信
+		//// 南校区
+		dbSs.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			const dataBusshiArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataBusshi = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataBusshiArray.push(dataBusshi);
+			});
+			const tagBusshiArray = [];
+			dataBusshiArray.forEach(function (data) {
+				const tagBusshi = `
+					<li id="${data.id}">
+					<p>【${data.data.kouku}】${data.data.staff}　
+					<span>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span><br>
+					　アルファ米：${data.data.kome} / 缶詰：${data.data.can} / 水：${data.data.water} / ビア：${data.data.beer} / 乾電池：${data.data.battery}<br>
+					　粉ミルク：${data.data.milk} / おむつ：${data.data.omutsu} / 毛布：${data.data.blanket} / マット：${data.data.mat}<br>
+					　その他：${data.data.text}</p>
+					</li>
+					`;
+				tagBusshiArray.push(tagBusshi);
+			})
+			$('#outputBusshiSouth').html(tagBusshiArray[0]);
+		});
+
+		//// 北校区
+		dbSn.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
+			const dataBusshiArray = [];
+			querySnapshot.docs.forEach(function (doc) {
+				const dataBusshi = {
+					id: doc.id,
+					data: doc.data(),
+				};
+				dataBusshiArray.push(dataBusshi);
+			});
+			const tagBusshiArray = [];
+			dataBusshiArray.forEach(function (data) {
+				const tagBusshi = `
+					<li id="${data.id}">
+					<p>【${data.data.kouku}】${data.data.staff}　
+					<span>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span><br>
+					　アルファ米：${data.data.kome} / 缶詰：${data.data.can} / 水：${data.data.water} / ビア：${data.data.beer} / 乾電池：${data.data.battery}<br>
+					　粉ミルク：${data.data.milk} / おむつ：${data.data.omutsu} / 毛布：${data.data.blanket} / マット：${data.data.mat}<br>
+					　その他：${data.data.text}</p>
+					</li>
+					`;
+				tagBusshiArray.push(tagBusshi);
+			})
+			$('#outputBusshiNorth').html(tagBusshiArray[0]);
+		});
+
+		// チャットを送受信（統括本部）
 		$('#sendChat').on('click', function () {
 			const dataChat = {
 				kouku: $('#koukuChat').val(),
-				staff: $('#staffChat').val(),
+				staff: $('#staffChat').val() || "anonymous",
 				chat: $('#chat').val(),
 				time: firebase.firestore.FieldValue.serverTimestamp(),
 			};
-			// console.log(dataChat);
 			dbC.add(dataChat);
 			$('#chat').val('');
 		});
 
 		dbC.orderBy('time', 'desc').onSnapshot(function (querySnapshot) {
-			// console.log(querySnapshot.docs);
 			const dataChatArray = [];
 			querySnapshot.docs.forEach(function (doc) {
 				const dataChat = {
@@ -207,24 +348,32 @@
 				};
 				dataChatArray.push(dataChat);
 			});
-			// console.log(dataChatArray);
-
 			const tagChatArray = [];
 			dataChatArray.forEach(function (data) {
-				const tagChat = `
-	<div class="onebox">
-		<div class="fukiArea">
-			<div class="fukidasi">
-				<li id="${data.id}">
-					<p>■ ${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</p>
-					<p>【${data.data.kouku}校区】${data.data.staff}</p>
-					<p>　${data.data.chat}</p>
-				</li>
-			</div>
-		</div>
-	</div>
-	`;
-				tagChatArray.push(tagChat);
+				//取得したデータの校区名が校区名以外なら右側に吹き出しを出す
+				const chatkouku = `${data.data.kouku}`;
+				const tagChatMe = `
+									<li id="${data.id}">
+									<p class='sender_name me'>【${data.data.kouku}】${data.data.staff}<br> 
+									<span class='sender_date'>　${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span></p>
+									<p class='right_balloon'>${data.data.chat}</p>
+									<p class='clear_balloon'></p></li>
+									`;
+				const tagChatOther = `
+									<li id="${data.id}">
+									<p class='sender_name'>【${data.data.kouku}】${data.data.staff}<br> 
+									<span class='sender_date'>　${convertFromFirestoreTimestampToDatetime(data.data.time.seconds)}</span></p>
+									<p class='left_balloon'>${data.data.chat}</p>
+									<p class='clear_balloon'></p></li>
+									`;
+
+				switch (chatkouku) {
+					case '統括本部':
+						tagChatArray.push(tagChatMe);
+						break;
+					default:
+						tagChatArray.push(tagChatOther);
+				}
 			})
 			$('#outputChat').html(tagChatArray);
 		});

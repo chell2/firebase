@@ -225,8 +225,7 @@
 		});
 
 
-		// チャットを送受信
-		//// 3.チャット ////
+		// チャットを送受信（物資補充担当）
 		$('#sendChat').on('click', function () {
 			const dataChat = {
 				kouku: $('#koukuChat').val(),
@@ -266,15 +265,12 @@
 									<p class='clear_balloon'></p></li>
 									`;
 
-				// let chatkouku = '中央';
 				switch (chatkouku) {
-					case '中央':
-					case '南':
-					case '北':
-						tagChatArray.push(tagChatOther);
+					case '物資補充担当':
+						tagChatArray.push(tagChatMe);
 						break;
 					default:
-						tagChatArray.push(tagChatMe);
+						tagChatArray.push(tagChatOther);
 				}
 			})
 			$('#outputChat').html(tagChatArray);
